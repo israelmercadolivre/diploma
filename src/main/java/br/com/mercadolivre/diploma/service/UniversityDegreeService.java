@@ -10,22 +10,18 @@ public class UniversityDegreeService {
 
     public UniversityDegreeDto calculateGrade(StudentDto studentDto) {
         UniversityDegreeDto dto = new UniversityDegreeDto();
-        dto.setName(studentDto.getName());
+        dto.setStudent(studentDto);
         StringBuilder message = new StringBuilder();
 
 
-         studentDto.getSubjectDtos()
+         dto.setAverage(studentDto.getSubjects()
                  .stream()
-                 .mapToDouble(SubjectDto::getGrade)
-                 .average()
-                 .ifPresent(value -> {
-             if(value > 9){
-                 message.append("Parabéns, sua média de nota foi: ");
+                 .mapToDouble(SubjectDto::getNote)
+                 .average().getAsDouble());
+
+             if(dto.getAverage() > 9){
+                 message.append("Congratulation, your average is: "+dto.getAverage());
              }
-
-             message.append(value);
-
-         });
 
          dto.setMessage(message.toString());
          return dto;
